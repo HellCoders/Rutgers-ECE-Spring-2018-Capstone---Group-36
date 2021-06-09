@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Sensor Hub Dashboard</title>
+	<link rel="shortcut icon" href="sensor-704x900.png" type="image/x-icon">
+	<link rel="stylesheet" href="teststyle.css">
+	<link rel="stylesheet" href="circle.css">
+</head>
+
+<body>
+
+ <!--is this the right way to do this-->
+<header class="header"> <img src="sensor-704x900.png" alt="logo" /> Sensor Hub Dashboard </header>
+
+<main>
+   <div class="grid">
+   <div class="module">
+	   <div class="c100 p23">
+			<span>23°C</span>
+			<div class="slice">
+					<div class="bar"></div>
+					<div class="fill"></div>
+			</div>
+		</div>
+	</div>
+	<div class="module">
+	   <div class="c100 p56">
+			<span><div style="font-size: 63%;" >56% Hum.</div></span>
+			<div class="slice">
+					<div class="bar"></div>
+					<div class="fill"></div>
+			</div>
+		</div>
+	</div>
+	<div class="module">
+	   <div class="c100 p96">
+			<span><div style="font-size: 85%;" >956 lux</div></span>
+			<div class="slice">
+					<div class="bar"></div>
+					<div class="fill"></div>
+			</div>
+		</div>
+	</div>
+	<div class="module">
+	   <div class="c100 p25">
+			<span>test</span>
+			<div class="slice">
+					<div class="bar"></div>
+					<div class="fill"></div>
+			</div>
+		</div>
+	</div>
+	<div class="module">
+	   <div class="c100 p50">
+			<span>test</span>
+			<div class="slice">
+					<div class="bar"></div>
+					<div class="fill"></div>
+			</div>
+		</div>
+	</div>
+	<div class="module">
+	   <div class="c100 p75">
+			<span>test</span>
+			<div class="slice">
+					<div class="bar"></div>
+					<div class="fill"></div>
+			</div>
+		</div>
+	</div>
+   </div>
+</main>
+</body>
+
+</html>
+

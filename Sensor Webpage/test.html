@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>SmartHome Dashboard</title>
+	<link rel="shortcut icon" href="sensor-704x900.png" type="image/x-icon">
+	<link rel="stylesheet" href="teststyle.css">
+	<link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
+	<script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+	
+	<script type="text/javascript">
+	function Swap(div1,div2)
+	{
+	d1 = document.getElementById(div1);
+	d2 = document.getElementById(div2);
+	if( d2.style.display == "none" )
+	{
+		d1.style.display = "none";
+		d2.style.display = "block";
+	}
+	else
+	{
+		d1.style.display = "block";
+		d2.style.display = "none";
+	}
+	}
+	
+	</script>
+</head>
+
+<body>
+<header class="header"> <img src="sensor-704x900.png" alt="logo" /> SmartHome Dashboard </header>
+
+<main>
+   <div class="grid">
+   <div class="module">
+	<div id="tempbar" onclick = "Swap('tempbar','tempgraph')">
+	   <script>
+			var tempbar = new ProgressBar.SemiCircle("#tempbar", {
+			strokeWidth: 6,
+			color: '#E6FFFF',
+			trailColor: '#eee',
+			trailWidth: 1,
+			easing: 'easeInOut',
+			duration: 1400,
+			svgStyle: null,
+			text: {
+				value: '',
+				alignToBottom: true
+			},
+			from: {color: '#E6FFFF'},
+			to: {color: '#66FFFF'},
+			// Set default step function for all animate calls
+			step: (state, tempbar) => {
+				tempbar.path.setAttribute('stroke', state.color);
+				var value = Math.round(tempbar.value() * 100);
+				if (value === 0) {
+				tempbar.setText('');
+				} else {
+				tempbar.setText(value + "°C");
+				}
+	
+				tempbar.text.style.color = state.color;
+			}
+			});
+			tempbar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+			tempbar.text.style.fontSize = '2rem';
+
+			tempbar.animate(.23);  // Number from 0.0 to 1.0
+		</script>
+		</div>
+		<div id="tempgraph" onclick = "Swap('tempbar','tempgraph')">
+			<canvas id="tempChart" width="200" height="200"></canvas>
+			<script>
+				var ctx = document.getElementById("tempChart").getContext('2d');
+				var tempChart = new Chart(ctx, {
+					type: 'line',
+					data: {
+						labels: [1500,1550,1600,1650,1700,1750,1800,1850,1900,1950],
+						datasets: [{ 
+							data: [23,22,16,35,43,27,12,0,24,12],
+							label: "Temperature",
+							borderColor: "#3e95cd",
+							fill: false
+						}
+						]
+					},
+					options: {
+						responsive: true,
+						title: {
+							display: true,
+							text: 'Temperature (°C)'
+						}
+					}
+				});
+				//tempChart.update(); You might need this and some other commands for live update http://www.chartjs.org/docs/latest/developers/updates.html
+			</script>
+		</div>	
+	</div>
+	
+	<div class="module">
+	   <div id="lumenbar" onclick = "Swap('lumenbar','lumgraph')">
+	   <script>
+			var lumenbar = new ProgressBar.SemiCircle("#lumenbar", {
+			strokeWidth: 6,
+			color: '#E6FFFF',
+			trailColor: '#eee',
+			trailWidth: 1,
+			easing: 'easeInOut',
+			duration: 1400,
+			svgStyle: null,
+			text: {
+				value: '',
+				alignToBottom: true
+			},
+			from: {color: '#E6FFFF'},
+			to: {color: '#66FFFF'},
+			// Set default step function for all animate calls
+			step: (state, lumenbar) => {
+				lumenbar.path.setAttribute('stroke', state.color);
+				var value = Math.round(lumenbar.value() * 10000);
+				if (value === 0) {
+				lumenbar.setText('');
+				} else {
+				lumenbar.setText(value + "\nlumens");
+				}
+	
+				lumenbar.text.style.color = state.color;
+			}
+			});
+			lumenbar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+			lumenbar.text.style.fontSize = '1.5rem';
+
+			lumenbar.animate(.16);  // Number from 0.0 to 1.0
+		</script>
+		</div>
+	</div>
+	
+	<div class="module">
+	   <div id="humidbar" onclick = "replace()">
+	   <script>
+			var humidbar = new ProgressBar.SemiCircle("#humidbar", {
+			strokeWidth: 6,
+			color: '#E6FFFF',
+			trailColor: '#eee',
+			trailWidth: 1,
+			easing: 'easeInOut',
+			duration: 1400,
+			svgStyle: null,
+			text: {
+				value: '',
+				alignToBottom: true
+			},
+			from: {color: '#E6FFFF'},
+			to: {color: '#66FFFF'},
+			// Set default step function for all animate calls
+			step: (state, humidbar) => {
+				humidbar.path.setAttribute('stroke', state.color);
+				var value = Math.round(humidbar.value() * 100);
+				if (value === 0) {
+				humidbar.setText('');
+				} else {
+				humidbar.setText(value + "%\nhumidity");
+				}
+	
+				humidbar.text.style.color = state.color;
+			}
+			});
+			humidbar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+			humidbar.text.style.fontSize = '1.5rem';
+
+			humidbar.animate(.5);  // Number from 0.0 to 1.0
+		</script>
+		</div>
+	</div>
+
+	<div class="module">
+	   <div id="airqualbar">
+	   <script>
+			var airqualbar = new ProgressBar.SemiCircle("#airqualbar", {
+			strokeWidth: 6,
+			color: '#E6FFFF',
+			trailColor: '#eee',
+			trailWidth: 1,
+			easing: 'easeInOut',
+			duration: 1400,
+			svgStyle: null,
+			text: {
+				value: '',
+				alignToBottom: true
+			},
+			from: {color: '#E6FFFF'},
+			to: {color: '#66FFFF'},
+			// Set default step function for all animate calls
+			step: (state, airqualbar) => {
+				airqualbar.path.setAttribute('stroke', state.color);
+				var value = Math.round(airqualbar.value() * 100);
+				if (value === 0) {
+				airqualbar.setText('');
+				} else {
+				airqualbar.setText(value + "%\nAir Quality");
+				}
+	
+				airqualbar.text.style.color = state.color;
+			}
+			});
+			airqualbar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+			airqualbar.text.style.fontSize = '1.5rem';
+
+			airqualbar.animate(.67);  // Number from 0.0 to 1.0
+		</script>
+		</div>
+	</div>
+	
+	<div class="module">
+	   <div id="nonsense">
+	   <script>
+			var nonsensebar = new ProgressBar.SemiCircle("#nonsense", {
+			strokeWidth: 6,
+			color: '#E6FFFF',
+			trailColor: '#eee',
+			trailWidth: 1,
+			easing: 'easeInOut',
+			duration: 1400,
+			svgStyle: null,
+			text: {
+				value: '',
+				alignToBottom: true
+			},
+			from: {color: '#E6FFFF'},
+			to: {color: '#66FFFF'},
+			// Set default step function for all animate calls
+			step: (state, nonsensebar) => {
+				nonsensebar.path.setAttribute('stroke', state.color);
+				var value = Math.round(nonsensebar.value() * 100);
+				if (value === 0) {
+				nonsensebar.setText('');
+				} else {
+				nonsensebar.setText(value + "%\nNonsense");
+				}
+	
+				nonsensebar.text.style.color = state.color;
+			}
+			});
+			nonsensebar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+			nonsensebar.text.style.fontSize = '1rem';
+
+			nonsensebar.animate(.88);  // Number from 0.0 to 1.0
+		</script>
+		</div>
+	</div>
+	
+	
+	<div class="module">
+	   <div id="nonbar2">
+	   <script>
+			var nonbar = new ProgressBar.SemiCircle("#nonbar2", {
+			strokeWidth: 6,
+			color: '#E6FFFF',
+			trailColor: '#eee',
+			trailWidth: 1,
+			easing: 'easeInOut',
+			duration: 1400,
+			svgStyle: null,
+			text: {
+				value: '',
+				alignToBottom: true
+			},
+			from: {color: '#E6FFFF'},
+			to: {color: '#66FFFF'},
+			// Set default step function for all animate calls
+			step: (state, nonbar) => {
+				nonbar.path.setAttribute('stroke', state.color);
+				var value = Math.round(nonbar.value() * 100);
+				if (value === 0) {
+				nonbar.setText('');
+				} else {
+				nonbar.setText(value + "%\nNonsense");
+				}
+	
+				nonbar.text.style.color = state.color;
+			}
+			});
+			nonbar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+			nonbar.text.style.fontSize = '1.5rem';
+
+			nonbar.animate(.67);  // Number from 0.0 to 1.0
+		</script>
+		</div>
+	</div>
+	
+	
+   </div>
+</main>
+</body>
+
+</html>
+

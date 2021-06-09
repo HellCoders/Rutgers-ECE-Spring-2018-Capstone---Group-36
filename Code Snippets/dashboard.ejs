@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>SmartHome Monitor</title>
+	<style>
+		body { margin: 2vh 2vw;
+		padding: 0;
+		background-color #EEEEEE;
+		}
+		ul { list-style-type: none;
+			padding: 0;
+			overflow: hidden;
+			background-color: #529EBE;
+		}
+		li { float: left;
+			border: 1px solid #4685A0;
+			border-left: none;
+		}
+		li a { display: block;
+			color: white;
+			text-align: center;
+			padding: 12px 16px;
+			text-decoration: none;
+		}
+		li a:hover:not(.active) { background-color: #57A4C4;
+		}
+		#columns { column-count: 4;
+		}
+		#tempbar { max-width: 21vw;
+      text-align: center;
+    }
+    #luxbar { max-width: 21vw;
+      text-align: center;
+    }
+    #humidbar { max-width: 21vw;
+      text-align: center;
+    }
+    #motionbar { max-width: 21vw;
+      text-align: center;
+    }
+	</style>
+<link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
+<script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js">
+  // Need to put titles for each semi-circle bar, and make units one line
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js">
+</script>
+</head>
+
+<body>
+<ul>
+<li><a href="http://capstone.caek.co">Dashboard</a></li>
+</ul>
+<div id="columns">
+<div id="humidbar"></div>
+<div id="motionbar"></div>
+<div id="luxbar"></div>
+<div id="tempbar"></div>
+</div>
+<div style="position: relative" width="84vw">
+<canvas id="humidChart"></canvas>
+</div>
+
+<script>
+var data = <%-JSON.stringify(data)%>;
+
+var humidbar = new ProgressBar.SemiCircle('#humidbar', {
+  strokeWidth: 6,
+  color: '#0FA0CE',
+  trailColor: '#eee',
+  trailWidth: 1,
+  easing: 'easeInOut',
+  duration: 1400,
+  svgStyle: null,
+  text: {
+    value: '',
+    alignToBottom: true
+  },
+  from: {color: '#0FA0CE'},
+  to: {color: '#0FA0CE'},
+  // Set default step function for all animate calls
+  step: (state, humidbar) => {
+    humidbar.path.setAttribute('stroke', state.color);
+    var value = Math.round(humidbar.value() * 100);
+    if (value === 0) {
+      humidbar.setText('');
+    } else {
+      humidbar.setText(value + "%");
+    }
+
+    humidbar.text.style.color = state.color;
+  }
+});
+humidbar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+humidbar.text.style.fontSize = '3vw';
+humidbar.animate(.48);  // Number from 0.0 to 1.0
+
+var motionbar = new ProgressBar.SemiCircle('#motionbar', {
+  strokeWidth: 6,
+  color: '#4caf50',
+  trailColor: '#eee',
+  trailWidth: 1,
+  easing: 'easeInOut',
+  duration: 1400,
+  svgStyle: null,
+  text: {
+    value: '',
+    alignToBottom: true
+  },
+  from: {color: '#4caf50'},
+  to: {color: '#4caf50'},
+  // Set default step function for all animate calls
+  step: (state, motionbar) => {
+    motionbar.path.setAttribute('stroke', state.color);
+    var value = Math.round(motionbar.value() * 100);
+    if (value === 0) {
+      motionbar.setText('');
+    } else {
+      motionbar.setText("4 hours");
+    }
+
+    motionbar.text.style.color = state.color;
+  }
+});
+motionbar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+motionbar.text.style.fontSize = '3vw';
+motionbar.animate(.48);  // Number from 0.0 to 1.0
+
+var luxbar = new ProgressBar.SemiCircle('#luxbar', {
+  strokeWidth: 6,
+  color: '#ffeb3b',
+  trailColor: '#eee',
+  trailWidth: 1,
+  easing: 'easeInOut',
+  duration: 1400,
+  svgStyle: null,
+  text: {
+    value: '',
+    alignToBottom: true
+  },
+  from: {color: '#ffeb3b'},
+  to: {color: '#ffeb3b'},
+  // Set default step function for all animate calls
+  step: (state, luxbar) => {
+    luxbar.path.setAttribute('stroke', state.color);
+    var value = Math.round(luxbar.value() * 10000);
+    if (value === 0) {
+      luxbar.setText('');
+    } else {
+      luxbar.setText("bright");
+    }
+
+    luxbar.text.style.color = state.color;
+  }
+});
+luxbar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+luxbar.text.style.fontSize = '3vw';
+luxbar.animate(1.0);  // Number from 0.0 to 1.0
+
+var tempbar = new ProgressBar.SemiCircle('#tempbar', {
+  strokeWidth: 6,
+  color: '#ff5722',
+  trailColor: '#eee',
+  trailWidth: 1,
+  easing: 'easeInOut',
+  duration: 1400,
+  svgStyle: null,
+  text: {
+    value: '',
+    alignToBottom: true
+  },
+  from: {color: '#ff5722'},
+  to: {color: '#ff5722'},
+  // Set default step function for all animate calls
+  step: (state, tempbar) => {
+    tempbar.path.setAttribute('stroke', state.color);
+    var value = Math.round(tempbar.value() * 100);
+    if (value === 0) {
+      tempbar.setText('');
+    } else {
+      tempbar.setText(value + "°F");
+    }
+
+    tempbar.text.style.color = state.color;
+  }
+});
+tempbar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+tempbar.text.style.fontSize = '3vw';
+tempbar.animate(.45);  // Number from 0.0 to 1.0
+
+var chartSelect = 0;
+// Humidity = 0, Motion = 1, Light = 2, Temp = 3
+
+// Need to use scatter plot then connect linearly for nice scaling.
+
+function redraw() {
+	var ctx = document.getElementById("humidChart").getContext('2d');
+	ctx.canvas.height = window.innerHeight * .96 - window.innerWidth*.105 - 80;
+	var humidChart = new Chart(ctx, {
+		type: 'line',
+		data: {
+			labels: [1500,1550,1600,1650,1700,1750,1800,1850,1900,1950],
+			datasets: [{ 
+				data: [23,22,16,35,43,27,12,0,24,12],
+				label: "Humidity (%)",
+				borderColor: "#0FA0CE",
+				fill: false
+			}
+			]
+		},
+		options: {
+			legend: {
+				display: false
+			},
+			responsive: true,
+			maintainAspectRatio: false,
+			title: {
+				display: true,
+				text: '% Humidity'
+			}
+		}
+	});
+}
+redraw();
+window.onresize = redraw();
+
+
+</script>
+
+</body>
